@@ -17,7 +17,6 @@ void Factory::produce(int type) {
     double gas;
     long double money;
     unsigned long long temp;
-    std::string position;
     std::string basket = "1";
     std::string the_same;
     std::string colour;
@@ -67,51 +66,37 @@ void Factory::produce(int type) {
             if (type == 1) {
                 std::cout << "Type number of doors of vehicle\n";
                 doors = Input_Output::Input_Number();
+                //Car new_vehicle = Car("Factory", colour, trunk, gas, 0.0, doors, money);
 
+                Key_To_File.open("Car_Parking.txt", std::ios::out | std::ios::app);
+                Key_To_File.seekg(Produced_Bicycles.back());
                 if(the_same == "1")
                     internal_iterator = how_many;
                 else
                     internal_iterator = 1;
-                Produced_Cars.open("Car_Positions.txt", std::ios::in | std::ios::ate);
-                std::getline(Produced_Cars, position);
-                temp = std::stoull(position);
-                Produced_Cars.close();
-
                 while (internal_iterator > 0) {
-                    Produced_Cars.open("Car_Parking.txt", std::ios::out | std::ios::ate);
-                    Produced_Cars.seekg(temp);
-                    Produced_Cars <<'\n' << colour << " " << trunk << " " << gas << " " << gas << " "
-                                  << doors << 0.0 << " ";
-                    temp = sizeof('\n') + 4 * sizeof(" ") + colour.size() + sizeof(trunk)
-                           + 2 * sizeof (gas) + sizeof(doors) + sizeof(0.0) + sizeof(money);
-                    Produced_Cars.open("Car_Positions.txt", std::ios::out | std::ios::ate);
-                    Produced_Cars << '\n' << temp;
-                    Produced_Cars.close();
+                    Key_To_File << colour << " " << trunk << " "  << gas << " " << gas << " " << 0.0
+                                << " " << doors << money << '\n';
+                    temp = 5 * sizeof(" ") + colour.size() + sizeof(trunk) + sizeof(money) + sizeof('\n');
+                    Produced_Bicycles.emplace_back(Produced_Bicycles.back() + temp);
                     internal_iterator--;
                     how_many--;
-                    temp += temp;
                 }
                 Key_To_File.close();
             }
             else {
-                Produced_Motorbikes.open("Motorbike_Positions.txt", std::ios::in | std::ios::ate);
-                std::getline(Produced_Motorbikes, position);
-                temp = std::stoull(position);
-                Produced_Motorbikes.close();
-                if (the_same == "1")
+                //Motorcycle new_motor = Motorcycle("Factory", colour, trunk, gas, 0.0, money);
+                Key_To_File.open("Motorbike_Parking.txt", std::ios::out | std::ios::app);
+                Key_To_File.seekg(Produced_Motorbikes.back());
+                if(the_same == "1")
                     internal_iterator = how_many;
                 else
                     internal_iterator = 1;
                 while (internal_iterator > 0) {
-                    Produced_Motorbikes.open("Motorbike_Parking.txt", std::ios::out | std::ios::ate);
-                    Produced_Motorbikes.seekg(temp);
-                    Produced_Motorbikes << '\n' << colour << " " << trunk << " " << gas << " " << gas << " "
-                                  << 0.0 << " " << money;
-                    temp = sizeof('\n') + 4 * sizeof(" ") + colour.size() + sizeof(trunk)
-                           + 2 * sizeof(gas) + sizeof(0.0) + sizeof(money);
-                    Produced_Motorbikes.open("Motorbike_Positions.txt", std::ios::out | std::ios::ate);
-                    Produced_Motorbikes << '\n' << temp;
-                    Produced_Motorbikes.close();
+                    Key_To_File << colour << " " << trunk << " " << gas << " " << gas << " " << 0.0 << '\n';
+                    temp = 4 * sizeof(" ") + colour.size() + sizeof(trunk)
+                           + 2 * sizeof (gas) + sizeof(0.0) + sizeof('\n');
+                    Produced_Motorbikes.emplace_back(Produced_Motorbikes.back() + temp);
                     internal_iterator--;
                     how_many--;
                     temp += temp;
@@ -120,28 +105,19 @@ void Factory::produce(int type) {
             }
         }
         else {
-            Produced_Bicycles.open("Bicycle_Positions.txt", std::ios::in | std::ios::ate);
-            std::getline(Produced_Bicycles, position);
-            temp = std::stoull(position);
-            Produced_Bicycles.close();
-
+            //Bicycle new_bic = Bicycle(colour, trunk);
+            Key_To_File.open("Bicycle_Parking.txt", std::ios::out | std::ios::app);
+            Key_To_File.seekg(Produced_Bicycles.back());
             if(the_same == "1")
                 internal_iterator = how_many;
             else
                 internal_iterator = 1;
             while (internal_iterator > 0) {
-                Produced_Bicycles.open("Bicycle_Parking.txt", std::ios::out | std::ios::ate);
-                Produced_Bicycles.seekg(temp);
-                Produced_Bicycles <<'\n' << colour << " " << trunk << " " << gas << " " << gas << " "
-                              << 0.0 << " " << money;
-                temp = sizeof('\n') + 4 * sizeof(" ") + colour.size() + sizeof(trunk)
-                       + 2 * sizeof (gas) + sizeof(0.0) + sizeof(money);
-                Produced_Bicycles.open("Bicycle_Positions.txt", std::ios::out | std::ios::ate);
-                Produced_Bicycles << '\n' << temp;
-                Produced_Bicycles.close();
+                Key_To_File << colour << " " << trunk << " " << money << '\n';
+                temp = 2 * sizeof(" ") + colour.size() + sizeof(trunk) + sizeof(money) + sizeof('\n');
+                Produced_Bicycles.emplace_back(Produced_Bicycles.back() + temp);
                 internal_iterator--;
                 how_many--;
-                temp += temp;
             }
             Key_To_File.close();
         }
@@ -172,7 +148,7 @@ void Factory::sell(int type) {
             Key_To_File.close();
 
 
-            //TODO Produced_Cars.erase(Produced_Cars.begin() + ID - 1);
+            Produced_Cars.erase(Produced_Cars.begin() + ID - 1);
             //TODO profit += Produced_Cars.at(ID - 1).get_price();
             std::cout << "Thanks for purchase and see you again!!!";
         }

@@ -27,7 +27,11 @@ public:
     void see_the_bicycles() const;
     void see_the_motorbikes() const;
     void get_profit() const;
-    explicit Factory(std::string mark = "Mercedes", long double money = 0.0) : label(mark), profit(money) {};
+    explicit Factory(std::string mark = "Mercedes", long double money = 0.0) : label(mark), profit(money) {
+        Produced_Cars.emplace_back(0);
+        Produced_Cars.emplace_back(0);
+        Produced_Cars.emplace_back(0);
+    };
     ~Factory() = default;
 };
 

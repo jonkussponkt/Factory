@@ -36,7 +36,6 @@ void Factory::produce(int type) {
         std::cout << "Decide if they are to be the same vehicles - press 1, otherwise press anything\n";
         the_same = Input_Output::Input_String();
     }
-
     while (how_many > 0) {
         std::cout << "VEHICLE NR " << ID << std::endl;
         std::cout << "Type price of the vehicle\n";

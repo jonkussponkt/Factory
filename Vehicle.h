@@ -18,6 +18,7 @@ public:
     long double get_price() const;
     void paint_a_vehicle();
     void print_veh_data();
+    std::string get_colour() const;
     Vehicle(std::string who_owns = "Factory", std::string painted_in = "", double trunk = 0.0, long double money = 0) :
             owner(who_owns), colour(painted_in), capacity(trunk), price(money){};
     virtual ~Vehicle(){};

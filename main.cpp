@@ -92,27 +92,27 @@ void hello(){
                     do {
                         try {
                             std::cout << "Input ID of vehicle you want to drive";
-                            ID = Input_Output::Input_Number_From_Range(1, Mercedes.Produced_Cars.size());
+                            ID = Input_Output::Input_Number_From_Range(1, 100);
                         }
                         catch (const Wrong_Input &wrong_input) {
                             std::cout << wrong_input.what();
                         }
 
                     }
-                    while (ID < 1 || ID > Mercedes.Produced_Cars.size());
+                    while (ID < 1 || ID > 100);//TODO wywalić 100 i zrobić odczyt ostatniej linii
                     //test_drive = &Mercedes.Produced_Cars[ID - 1];
                 }
                 else if (choose_type == 2) {
                     do {
                         try {
-                            ID = Input_Output::Input_Number_From_Range(1, Mercedes.Produced_Motorbikes.size());
+                            ID = Input_Output::Input_Number_From_Range(1, 100);
                             std::cout << "Input ID of vehicle you want to drive";
                         }
                         catch (const Wrong_Input &wrong_input) {
                             std::cout << wrong_input.what();
                         }
                     }
-                    while(ID < 1 || ID > Mercedes.Produced_Motorbikes.size());
+                    while(ID < 1 || ID > 100);
                     //test_drive = &Mercedes.Produced_Motorbikes[ID - 1];
                 }
                 //test_drive->drive();
@@ -134,39 +134,39 @@ void hello(){
                     do {
                         std::cout << "Input ID of vehicle you want to repaint";
                         try {
-                            ID = Input_Output::Input_Number_From_Range(1, Mercedes.Produced_Cars.size());
+                            ID = Input_Output::Input_Number_From_Range(1, 100);
                         }
                         catch (const Wrong_Input & wrong_input){
                             std::cout << wrong_input.what();
                         }
                     }
-                    while (ID < 1 || ID > Mercedes.Produced_Cars.size());
+                    while (ID < 1 || ID > 100);
                     //Mercedes.Produced_Cars[ID - 1].paint_a_vehicle();
                 }
                 else if (choose_type == 2) {
                     do {
                         std::cout << "Input ID of vehicle you want to repaint";
                         try {
-                            ID = Input_Output::Input_Number_From_Range(1, Mercedes.Produced_Motorbikes.size());
+                            ID = Input_Output::Input_Number_From_Range(1, 100);
                         }
                         catch (const Wrong_Input & wrong_input){
                             std::cout << wrong_input.what();
                         }
                     }
-                    while (ID < 1 || ID > Mercedes.Produced_Motorbikes.size());
+                    while (ID < 1 || ID > 100);
                     //Mercedes.Produced_Motorbikes[ID - 1].paint_a_vehicle();
                 }
                 else if(choose_type == 3){
                     do{
                         std::cout << "Input ID of vehicle you want to repaint";
                         try {
-                            ID = Input_Output::Input_Number_From_Range(1, Mercedes.Produced_Bicycles.size());
+                            ID = Input_Output::Input_Number_From_Range(1, 100);
                         }
                         catch (const Wrong_Input & wrong_input){
                             std::cout << wrong_input.what();
                         }
                     }
-                    while (ID < 1 || ID > Mercedes.Produced_Bicycles.size());
+                    while (ID < 1 || ID > 100);
                     //Mercedes.Produced_Bicycles[ID - 1].paint_a_vehicle();
                 }
                 break;

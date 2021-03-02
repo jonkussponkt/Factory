@@ -20,3 +20,7 @@ void Vehicle::print_veh_data() {
 long double Vehicle::get_price() const {
     return price;
 }
+
+std::string Vehicle::get_colour() const {
+    return colour;
+}

@@ -16,9 +16,6 @@
 class Factory {
     const std::string label;
     long double profit;
-    std::vector<long long> Produced_Cars;
-    std::vector<long long> Produced_Motorbikes;
-    std::vector<long long> Produced_Bicycles;
     friend void hello();
 public:
     void produce(int type);
@@ -27,11 +24,7 @@ public:
     void see_the_bicycles() const;
     void see_the_motorbikes() const;
     void get_profit() const;
-    explicit Factory(std::string mark = "Mercedes", long double money = 0.0) : label(mark), profit(money) {
-        Produced_Cars.emplace_back(0);
-        Produced_Cars.emplace_back(0);
-        Produced_Cars.emplace_back(0);
-    };
+    explicit Factory(std::string mark = "Mercedes", long double money = 0.0) : label(mark), profit(money) {};
     ~Factory() = default;
 };
 

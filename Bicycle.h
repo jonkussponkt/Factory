@@ -10,7 +10,8 @@
 class Bicycle : public Vehicle {
 public:
     double get_capacity() override;
-    Bicycle(std::string painted_in, double how_much) : Vehicle("Factory", painted_in, how_much){};
+    friend std::ostream & operator << (std::ostream & file, const Bicycle & bicycle);
+    Bicycle(std::string painted_in, double trunk, long double how_much) : Vehicle("Factory", painted_in, trunk, how_much){};
     ~Bicycle() override {};
 };
 

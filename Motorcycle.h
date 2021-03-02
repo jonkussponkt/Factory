@@ -11,6 +11,7 @@ class Motorcycle : public Motor_Vehicle{
 public:
     void drive() override;
     double get_capacity() override;
+    friend std::ostream & operator << (std::ostream & file, const Motorcycle & motorcycle);
     Motorcycle(std::string who_owns, std::string colour, double capacity, double gas,
                double miles, long double money)
     : Motor_Vehicle(who_owns, colour, capacity, gas, miles, money){};

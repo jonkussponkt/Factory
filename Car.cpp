@@ -32,3 +32,8 @@ void Car::drive() {
         fuel_up();
 }
 
+std::ostream & operator<<(std::ostream & file, const Car &car) {
+    file << car.get_colour() << " " << car.capacity << " "  << car.gas_capacity << " " << car.gas_in_engine
+         << " " << car.mileage << " " << car.number_of_doors << " " << car.get_price();
+    return file;
+}

@@ -34,3 +34,9 @@ void Motorcycle::drive() {
     if(fuel == "1")
         fuel_up();
 }
+
+std::ostream & operator<<(std::ostream & file, const Motorcycle &motorcycle) {
+    file << motorcycle.get_colour() << " " << motorcycle.capacity << " " << motorcycle.gas_capacity << " "
+         << motorcycle.gas_in_engine << " " << motorcycle.gas_in_engine << " " << motorcycle.get_price();
+    return file;
+}

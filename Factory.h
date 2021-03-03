@@ -18,11 +18,9 @@ class Factory {
     long double profit;
     friend void hello();
 public:
-    void produce(int type);
-    void sell(int type);
-    void see_the_cars() const;
-    void see_the_bicycles() const;
-    void see_the_motorbikes() const;
+    static void produce(int type);
+    static void see_chosen_list(const std::string & file_name);
+    void sell(const std::string & file_name);
     void get_profit() const;
     explicit Factory(std::string mark = "Mercedes", long double money = 0.0) : label(mark), profit(money) {};
     ~Factory() = default;

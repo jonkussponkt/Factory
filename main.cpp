@@ -5,6 +5,7 @@
 
 void hello(){
     int choice = 0;
+    const char * type;
     Factory Mercedes;
     do {
         do {
@@ -53,11 +54,11 @@ void hello(){
                 }
                 while (choose_type < 1 || choose_type > 3);
                 if (choose_type == 1)
-                    Mercedes.see_the_cars();
+                    Mercedes.see_chosen_list("Car_Parking.txt");
                 else if (choose_type == 2)
-                    Mercedes.see_the_motorbikes();
+                    Mercedes.see_chosen_list("Motorbike_Parking.txt");
                 else if (choose_type == 3)
-                    Mercedes.see_the_bicycles();
+                    Mercedes.see_chosen_list("Bicycle_Parking.txt");
                 break;
             case 3:
                 std::cout << "Input type of vehicle you want to sell\n";
@@ -71,7 +72,13 @@ void hello(){
                     }
                 }
                 while (choose_type < 1 || choose_type > 3);
-                Mercedes.sell(choose_type);
+                if(choose_type == 1)
+                    type = "Car_Parking.txt";
+                else if(choose_type == 2)
+                    type = "Motorbike_Parking.txt";
+                else if(choose_type == 3)
+                    type = "Bicycle_Parking.txt";
+                Mercedes.sell(type);
                 break;
             case 4:
                 Motor_Vehicle * test_drive;

@@ -145,7 +145,7 @@ void Factory::produce(int type) {
     }
 }
 
-void Factory::sell(int type) {
+void Factory::sell(const std::string &file_name) {
     int ID;
     int payment;
     int number;
@@ -153,197 +153,75 @@ void Factory::sell(int type) {
     std::string From_File;
     std::fstream Key_To_Data;
     std::fstream Temp;
+    std::vector<std::string> Produced_Vehicles;
 
-
-    if(type == 1) {
-        Key_To_Data.open("Car_Parking.txt", std::ios::in);
-
-        std::getline(Key_To_Data, From_File);
-        if(From_File.empty())
-            std::cout << "There are no such vehicles in factory\n";
-        else {
-            see_the_cars();
-            std::vector<std::string> Produced_Cars;
-//TODO
-            do {
-                std::cout << "Type the ID of the vehicle you want to buy\n";
-                ID = Input_Output::Input_Number();
-                std::cout << "Press anything to confirm your choice\nIf you want to decide once more - press 1";
-                decision = Input_Output::Input_String();
-            }
-            while(decision == "1");
-
-            number = 1;
-            Key_To_Data.seekg(std::ios::beg);
-            while (number <= ID && !Key_To_Data.eof() && !From_File.empty()) {
-                std::getline(Key_To_Data, From_File);
-                Produced_Cars.emplace_back(From_File);
-                number++;
-            }
-
-            std::cout << From_File << std::endl;
-            int space_position = From_File.find_last_of(' ');
-            int last_character = From_File.find('\n');
-            payment = std::stoi(From_File.substr(space_position, last_character - space_position));
-
-            From_File.replace(From_File.begin(), From_File.end(), "");
-            Key_To_Data << From_File;
-            Key_To_Data.close();
-
-
-            Key_To_Data.open("profit.txt", std::ios::out);
-            Key_To_Data >> profit;
-            profit += payment;
-            Key_To_Data << profit;
-
-            std::cout << "Thanks for purchase and see you again!!!";
-        }
-    }
-    else if(type == 2) {
-        std::vector<std::string> Produced_Motorbikes;
-        Key_To_Data.open("Motorbike_Parking.txt", std::ios::in | std::ios::out);
-
-        std::getline(Key_To_Data, From_File);
-        if(From_File.empty())
-            std::cout << "There are no such vehicles in factory\n";
-        else {
-            see_the_cars();
-            std::vector<std::string> Produced_Cars;
-//TODO
-            do {
-                std::cout << "Type the ID of the vehicle you want to buy\n";
-                ID = Input_Output::Input_Number();
-                std::cout << "Press anything to confirm your choice\nIf you want to decide once more - press 1";
-                decision = Input_Output::Input_String();
-            }
-            while (decision == "1");
-
-            number = 1;
-            Key_To_Data.seekg(std::ios::beg);
-            while (number <= ID && !Key_To_Data.eof() && !From_File.empty()) {
-                std::getline(Key_To_Data, From_File);
-                Produced_Motorbikes.emplace_back(From_File);
-                number++;
-            }
-
-            std::cout << From_File << std::endl;
-            int space_position = From_File.find_last_of(' ');
-            int last_character = From_File.find('\n');
-            payment = std::stoi(From_File.substr(space_position, last_character - space_position));
-
-            From_File.replace(From_File.begin(), From_File.end(), "");
-            Key_To_Data << From_File;
-            Key_To_Data.close();
-
-            Key_To_Data.open("profit.txt", std::ios::out);
-            Key_To_Data >> profit;
-            profit += payment;
-            Key_To_Data << profit;
-
-            std::cout << "Thanks for purchase and see you again!!!";
-        }
-    }
-    else if(type == 3) {
-        std::vector<std::string> Produced_Bicycles;
-        Key_To_Data.open("Bicycle_Parking.txt", std::ios::in | std::ios::out);
-
-        std::getline(Key_To_Data, From_File);
-        if(From_File.empty())
-            std::cout << "There are no such vehicles in factory\n";
-        else {
-            see_the_cars();
-            std::vector<std::string> Produced_Cars;
-//TODO
-            do {
-                std::cout << "Type the ID of the vehicle you want to buy\n";
-                ID = Input_Output::Input_Number();
-                std::cout << "Press anything to confirm your choice\nIf you want to decide once more - press 1";
-                decision = Input_Output::Input_String();
-            }
-            while(decision == "1");
-
-            number = 1;
-            Key_To_Data.seekg(std::ios::beg);
-            while (std::getline(Key_To_Data, From_File)) {
-                if (number == ID){
-                    std::cout << From_File << std::endl;
-                    int space_position = From_File.find_last_of(' ');
-                    int last_character = From_File.find('\n');
-                    payment = std::stoi(From_File.substr(space_position, last_character - space_position));
-                }
-                else
-                    Produced_Bicycles.emplace_back(From_File);
-                number++;
-            }
-            Key_To_Data.close();
-
-            Temp.open("Temp.txt", std::ios::out);
-            for(const auto & i : Produced_Bicycles)
-                Temp << i << '\n';
-            remove("Bicycle_Parking.txt");
-            rename("Temp.txt", "Bicycle_Parking.txt");
-            Temp.close();
-
-            Key_To_Data.open("profit.txt", std::ios::out);
-            Key_To_Data >> profit;
-            profit += payment;
-            Key_To_Data << profit;
-
-            std::cout << "Thanks for purchase and see you again!!!";
-        }
-    }
-    Key_To_Data.close();
-}
-
-void Factory::see_the_cars() const {
-    std::string From_File;
-    std::fstream Key_To_Data;
-    Key_To_Data.open("Car_Parking.txt", std::ios::in);
-
+    Key_To_Data.open(file_name.c_str(), std::ios::in);
     std::getline(Key_To_Data, From_File);
-    if(From_File.empty())
+
+    Produced_Vehicles.emplace_back(From_File);
+    if (From_File.empty())
         std::cout << "There are no such vehicles in factory\n";
     else {
-        int ID = 1;
-        while(std::getline(Key_To_Data, From_File)) {
-            std::cout << ID << ". " << From_File << std::endl;
-            ID++;
+//TODO
+        do {
+            std::cout << "Type ID of the vehicle you want to buy\n";
+            ID = Input_Output::Input_Number();
+            std::cout << "Press anything to confirm your choice\nIf you want to decide once more - press 1";
+            decision = Input_Output::Input_String();
         }
-    }
-    Key_To_Data.close();
-}
+        while (decision == "1");
 
-void Factory::see_the_bicycles() const {
-    std::string From_File;
-    std::fstream Key_To_Data;
-    Key_To_Data.open("Bicycle_Parking.txt", std::ios::in);
+        number = 1;
+        int space_position;
+        int last_character;
 
-    std::getline(Key_To_Data, From_File);
-    if(From_File.empty())
-        std::cout << "There are no such vehicles in factory\n";
-    else {
-        int ID = 1;
-        while(std::getline(Key_To_Data, From_File)) {
-            std::cout << ID << ". " << From_File << std::endl;
-            ID++;
-        }
-    }
-    Key_To_Data.close();
-}
-
-void Factory::see_the_motorbikes() const {
-    std::string From_File;
-    std::fstream Key_To_Data;
-    Key_To_Data.open("Motorbike_Parking.txt", std::ios::in);
-
-    std::getline(Key_To_Data, From_File);
-    if(From_File.empty())
-        std::cout << "There are no such vehicles in factory\n";
-    else {
-        int ID = 1;
         while (std::getline(Key_To_Data, From_File)) {
-            std::cout << ID << ". " << From_File << std::endl;
+            if (number == ID) {
+                space_position = From_File.find_last_of(' ');
+                last_character = From_File.find('\n');
+                payment = std::stoi(From_File.substr(space_position, last_character - space_position));
+            }
+            else
+                Produced_Vehicles.emplace_back(From_File);
+            number++;
+        }
+
+        Key_To_Data.close();
+
+        Temp.open("Temp.txt", std::ios::out);
+        for (auto & Produced_Vehicle : Produced_Vehicles) {
+            Temp << Produced_Vehicle << '\n';
+        }
+        Temp.close();
+        remove(file_name.c_str());
+        rename("Temp.txt", file_name.c_str());
+
+
+        Key_To_Data.open("profit.txt", std::ios::in | std::ios::out);
+        Key_To_Data >> profit;
+        profit += payment;
+        Key_To_Data << profit;
+        Key_To_Data.close();
+
+        std::cout << "Thanks for purchase and see you again!!!";
+    }
+}
+
+void Factory::see_chosen_list(const std::string & file_name) {
+    std::string From_File;
+    std::fstream Key_To_Data;
+
+    Key_To_Data.open(file_name.c_str(), std::ios::in);
+    std::getline(Key_To_Data, From_File);
+
+    if(From_File.empty())
+        std::cout << "There are no such vehicles in factory\n";
+    else {
+        int ID = 1;
+        std::cout << ID << ". " << From_File << std::endl;
+        while(std::getline(Key_To_Data, From_File)) {
             ID++;
+            std::cout << ID << ". " << From_File << std::endl;
         }
     }
     Key_To_Data.close();

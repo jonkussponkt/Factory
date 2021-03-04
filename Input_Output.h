@@ -34,6 +34,7 @@ public:
     static double Input_Double();
     static double Input_Double_From_Range(double left_lim, double right_lim);
     static std::string Input_String();
+    static void swap_files(std::fstream Key_To_Data);
 };
 
 

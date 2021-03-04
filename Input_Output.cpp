@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Input_Output.h"
 
 void Input_Output::info(int right_lim) {

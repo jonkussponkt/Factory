@@ -5,7 +5,9 @@
 
 void hello(){
     int choice = 0;
-    const char * type;
+    std::string type;
+    std::string str_vehicle;
+    std::fstream Key_To_Data;
     Factory Mercedes;
     do {
         do {
@@ -37,7 +39,7 @@ void hello(){
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
                     }
-                    Mercedes.produce(choose_type);
+                    Factory::produce(choose_type);
                 }
                 while (choose_type < 1 || choose_type > 3);
                 break;
@@ -54,11 +56,11 @@ void hello(){
                 }
                 while (choose_type < 1 || choose_type > 3);
                 if (choose_type == 1)
-                    Mercedes.see_chosen_list("Car_Parking.txt");
+                    Factory::see_chosen_list("Car_Parking.txt");
                 else if (choose_type == 2)
-                    Mercedes.see_chosen_list("Motorbike_Parking.txt");
+                    Factory::see_chosen_list("Motorbike_Parking.txt");
                 else if (choose_type == 3)
-                    Mercedes.see_chosen_list("Bicycle_Parking.txt");
+                    Factory::see_chosen_list("Bicycle_Parking.txt");
                 break;
             case 3:
                 std::cout << "Input type of vehicle you want to sell\n";
@@ -82,7 +84,11 @@ void hello(){
                 break;
             case 4:
                 Motor_Vehicle * test_drive;
+                //TODO: PRZENIEŚĆ TO W INNE MIEJSCE!!!!
+
                 int ID;
+                int number;
+                int spaces;
                 do {
                     std::cout << "Input type of vehicle you want to drive for a test\n";
                     Input_Output::info(2);
@@ -99,15 +105,33 @@ void hello(){
                     do {
                         try {
                             std::cout << "Input ID of vehicle you want to drive";
-                            ID = Input_Output::Input_Number_From_Range(1, 100);
+                            ID = Input_Output::Input_Number_From_Range(1, 500);
                         }
                         catch (const Wrong_Input &wrong_input) {
                             std::cout << wrong_input.what();
                         }
+                    }
+                    while (ID < 1 || ID > 500);//TODO wywalić 100 i zrobić odczyt ostatniej linii
+
+                    number = 1;
+                    Key_To_Data.open("Car_Parking.txt", std::ios::in);
+                    std::getline(Key_To_Data, str_vehicle);
+                    if(str_vehicle.empty())
+                        std::cout << "There are no such vehicles in factory\n";
+                    while(number < ID || std::getline(Key_To_Data, str_vehicle)){
+                        number++;
+                    }
+                    Key_To_Data.close();
+
+                    spaces = 0;
+                    std::string colour = str_vehicle.substr(0, str_vehicle.find_first_of(' '));
+                    while(str_vehicle.find(' ')){
 
                     }
-                    while (ID < 1 || ID > 100);//TODO wywalić 100 i zrobić odczyt ostatniej linii
-                    //test_drive = &Mercedes.Produced_Cars[ID - 1];
+
+                    //test_drive = new Car("Factory", colour, );
+                    //test_drive->drive();
+                    //delete test_drive;
                 }
                 else if (choose_type == 2) {
                     do {
@@ -125,63 +149,10 @@ void hello(){
                 //test_drive->drive();
                 break;
             case 5:
-                do {
-                    try {
-                        std::cout << "Input type of vehicle you want to repaint\n";
-                        Input_Output::info(3);
-                        choose_type = Input_Output::Input_Number_From_Range(1, 3);
-                    }
-                    catch (const Wrong_Input &wrong_input) {
-                        std::cout << wrong_input.what();
-                    }
-                }
-                while(choose_type < 1 || choose_type > 3);
-
-                if(choose_type == 1) {
-                    do {
-                        std::cout << "Input ID of vehicle you want to repaint";
-                        try {
-                            ID = Input_Output::Input_Number_From_Range(1, 100);
-                        }
-                        catch (const Wrong_Input & wrong_input){
-                            std::cout << wrong_input.what();
-                        }
-                    }
-                    while (ID < 1 || ID > 100);
-                    //Mercedes.Produced_Cars[ID - 1].paint_a_vehicle();
-                }
-                else if (choose_type == 2) {
-                    do {
-                        std::cout << "Input ID of vehicle you want to repaint";
-                        try {
-                            ID = Input_Output::Input_Number_From_Range(1, 100);
-                        }
-                        catch (const Wrong_Input & wrong_input){
-                            std::cout << wrong_input.what();
-                        }
-                    }
-                    while (ID < 1 || ID > 100);
-                    //Mercedes.Produced_Motorbikes[ID - 1].paint_a_vehicle();
-                }
-                else if(choose_type == 3){
-                    do{
-                        std::cout << "Input ID of vehicle you want to repaint";
-                        try {
-                            ID = Input_Output::Input_Number_From_Range(1, 100);
-                        }
-                        catch (const Wrong_Input & wrong_input){
-                            std::cout << wrong_input.what();
-                        }
-                    }
-                    while (ID < 1 || ID > 100);
-                    //Mercedes.Produced_Bicycles[ID - 1].paint_a_vehicle();
-                }
-                break;
-            case 6:
                 std::cout << "To see the profit";
                 Mercedes.get_profit();
                 break;
-            case 7:
+            case 6:
                 std::cout << "Thanks and see you again!\n";
                 break;
             default:
@@ -189,7 +160,7 @@ void hello(){
                 break;
         }
     }
-    while(choice != 7);
+    while(choice != 6);
 }
 
 int main() {

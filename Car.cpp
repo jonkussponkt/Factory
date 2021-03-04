@@ -11,8 +11,7 @@ double Car::get_capacity() {
 
 void Car::drive() {
     double driven_road = -1.0;
-    std::string fuel;
-
+    std::cout << "UDALO SIEEEEEEEEEE\n";
     do {
         try {
             std::cout << "Input driven road in kilometers - max 40 kms";
@@ -25,14 +24,11 @@ void Car::drive() {
     while(driven_road < 0 || driven_road > 40);
     gas_in_engine -= driven_road * 0.062;
     mileage += driven_road;
-    std::cout << "Gas in engine currently: " << gas_in_engine << " Do you want to fuel the car up?"
-                                                                 "If so, press 1, otherwise press anything\n";
-    fuel = Input_Output::Input_String();
-    if(fuel == "1")
-        fuel_up();
+    std::cout << "Gas in engine currently: " << gas_in_engine;
+
 }
 
-std::ostream & operator<<(std::ostream & file, const Car &car) {
+std::ostream & operator<<(std::ostream & file, const Car & car) {
     file << car.get_colour() << " " << car.capacity << " "  << car.gas_capacity << " " << car.gas_in_engine
          << " " << car.mileage << " " << car.number_of_doors << " " << car.get_price();
     return file;

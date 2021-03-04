@@ -99,7 +99,6 @@ void Factory::produce(int type) {
                     empty_file = true;
                 Key_To_Data.close();
 
-
                 if(the_same == "1")
                     internal_iterator = how_many;
                 else
@@ -162,7 +161,6 @@ void Factory::sell(const std::string &file_name) {
     if (From_File.empty())
         std::cout << "There are no such vehicles in factory\n";
     else {
-//TODO
         do {
             std::cout << "Type ID of the vehicle you want to buy\n";
             ID = Input_Output::Input_Number();
@@ -195,7 +193,6 @@ void Factory::sell(const std::string &file_name) {
         Temp.close();
         remove(file_name.c_str());
         rename("Temp.txt", file_name.c_str());
-
 
         Key_To_Data.open("profit.txt", std::ios::in | std::ios::out);
         Key_To_Data >> profit;

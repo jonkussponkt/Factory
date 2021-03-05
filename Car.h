@@ -11,8 +11,8 @@
 class Car : public Motor_Vehicle {
     int number_of_doors;
 public:
+    void create_motor_vehicle(int ID) override;
     void drive() override;
-    double get_capacity() override;
     friend std::ostream & operator<<(std::ostream & file, const Car & car);
     Car(std::string who_owns = "Factory", std::string colour = "", double capacity = 0.0, double gas = 0.0,
         double miles = 0.0, int doors = 0, long double money = 0.0) :

@@ -9,6 +9,7 @@ void hello(){
     std::string str_vehicle;
     std::fstream Key_To_Data;
     Factory Mercedes;
+    Mercedes.create_a_factory();
     do {
         do {
             try {
@@ -17,9 +18,8 @@ void hello(){
                              "Please choose one of the sections enlisted below:\n"
                              "Press 1 - to produce the vehicle\nPress 2 - to see the list of vehicles\n"
                              "Press 3 - to sell the vehicle\nPress 4 - to drive for a test\n"
-                             "Press 5 - to repaint the vehicle\nPress 6 - to see the current profit\n"
-                             "Press 7 - to exit the program\n";
-                choice = Input_Output::Input_Number_From_Range(1, 7);
+                             "Press 5 - to see additional information\nPress 6 - to exit the program\n";
+                choice = Input_Output::Input_Number_From_Range(1, 6);
             }
             catch (const Wrong_Input &wrong_input) {
                 std::cout << wrong_input.what();
@@ -39,7 +39,7 @@ void hello(){
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
                     }
-                    Factory::produce(choose_type);
+                    Mercedes.produce(choose_type);
                 }
                 while (choose_type < 1 || choose_type > 3);
                 break;
@@ -87,8 +87,6 @@ void hello(){
                 //TODO: PRZENIEŚĆ TO W INNE MIEJSCE!!!!
 
                 int ID;
-                int number;
-                int spaces;
                 do {
                     std::cout << "Input type of vehicle you want to drive for a test\n";
                     Input_Output::info(2);
@@ -111,27 +109,8 @@ void hello(){
                             std::cout << wrong_input.what();
                         }
                     }
-                    while (ID < 1 || ID > 500);//TODO wywalić 100 i zrobić odczyt ostatniej linii
-
-                    number = 1;
-                    Key_To_Data.open("Car_Parking.txt", std::ios::in);
-                    std::getline(Key_To_Data, str_vehicle);
-                    if(str_vehicle.empty())
-                        std::cout << "There are no such vehicles in factory\n";
-                    while(number < ID || std::getline(Key_To_Data, str_vehicle)){
-                        number++;
-                    }
-                    Key_To_Data.close();
-
-                    spaces = 0;
-                    std::string colour = str_vehicle.substr(0, str_vehicle.find_first_of(' '));
-                    while(str_vehicle.find(' ')){
-
-                    }
-
-                    //test_drive = new Car("Factory", colour, );
-                    //test_drive->drive();
-                    //delete test_drive;
+                    while (ID < 1 || ID > Mercedes.nr_of_cars);//TODO wywalić 100 i zrobić odczyt ostatniej linii
+                    test_drive = new Car;
                 }
                 else if (choose_type == 2) {
                     do {
@@ -143,14 +122,15 @@ void hello(){
                             std::cout << wrong_input.what();
                         }
                     }
-                    while(ID < 1 || ID > 100);
-                    //test_drive = &Mercedes.Produced_Motorbikes[ID - 1];
+                    while(ID < 1 || ID > Mercedes.nr_of_motorbikes);
+                    test_drive = new Motorcycle;
                 }
-                //test_drive->drive();
+                test_drive->create_motor_vehicle(ID);
+                test_drive->drive();
+                delete test_drive;
                 break;
             case 5:
-                std::cout << "To see the profit";
-                Mercedes.get_profit();
+                Mercedes.get_info();
                 break;
             case 6:
                 std::cout << "Thanks and see you again!\n";

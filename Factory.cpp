@@ -2,12 +2,77 @@
 // Created by Admin on 05.01.2021.
 //
 
-#include "Factory.h"
-#include "Input_Output.h"
-
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "Factory.h"
+#include "Input_Output.h"
+
+
+void Factory::create_a_factory() {
+    int nr_of_line = 1;
+    std::string From_File;
+    std::fstream Key_To_Data;
+    Key_To_Data.open("Raport.txt", std::ios::in);
+    if(Key_To_Data.good()){
+        while(std::getline(Key_To_Data, From_File)){
+            if(!From_File.empty()) {
+                if (nr_of_line == 1)
+                    profit = std::stod(From_File);
+                else if (nr_of_line == 2)
+                    nr_of_cars = std::stoi(From_File);
+                else if (nr_of_line == 3)
+                    nr_of_motorbikes = std::stoi(From_File);
+                else if (nr_of_line == 4)
+                    nr_of_bicycles = std::stoi(From_File);
+                else if (nr_of_line == 5)
+                    sold_cars = std::stoi(From_File);
+                else if(nr_of_line == 6)
+                    sold_motorbikes = std::stoi(From_File);
+                else if(nr_of_line == 7)
+                    sold_bicycles = std::stoi(From_File);
+                nr_of_line++;
+            }
+        }
+        Key_To_Data.close();
+    }
+}
+
+void Factory::close_factory(){
+    std::fstream Key_To_Data;
+    Key_To_Data.open("Raport.txt", std::ios::out);
+    Key_To_Data << profit << '\n';
+    Key_To_Data << nr_of_cars << '\n';
+    Key_To_Data << nr_of_motorbikes << '\n';
+    Key_To_Data << nr_of_bicycles << '\n';
+    Key_To_Data << sold_cars << '\n';
+    Key_To_Data << sold_motorbikes << '\n';
+    Key_To_Data << sold_bicycles << '\n';
+    Key_To_Data.close();
+}
+
+void Factory::get_info() const {
+    int i = 1;
+    std::string From_File;
+    std::fstream Key_To_Data;
+    Key_To_Data.open("Raport.txt", std::ios::in);
+    if(Key_To_Data.good()){
+        while(std::getline(Key_To_Data, From_File)){
+            if(i == 1)
+                std::cout << "Current profit: " << From_File;
+            else if(i == 2)
+                std::cout << "Sold cars: " << From_File;
+            else if(i == 3)
+                std::cout << "Sold motorbikes: " << From_File;
+            else if(i == 4)
+                std::cout << "Sold bicycles: " << From_File;
+            i++;
+        }
+        Key_To_Data.close();
+    }
+    else
+        std::cout << "An unexpected error occurred\n";
+}
 
 void Factory::produce(int type) {
     int how_many;
@@ -88,6 +153,7 @@ void Factory::produce(int type) {
                     Key_To_Data << new_vehicle;
                     internal_iterator--;
                     how_many--;
+                    nr_of_cars++;
                 }
                 Key_To_Data.close();
             }
@@ -112,6 +178,7 @@ void Factory::produce(int type) {
                     empty_file = false;
                     internal_iterator--;
                     how_many--;
+                    nr_of_motorbikes++;
                 }
                 Key_To_Data.close();
             }
@@ -136,6 +203,7 @@ void Factory::produce(int type) {
                 empty_file = false;
                 internal_iterator--;
                 how_many--;
+                nr_of_bicycles++;
             }
             Key_To_Data.close();
 
@@ -178,12 +246,18 @@ void Factory::sell(const std::string &file_name) {
                 space_position = From_File.find_last_of(' ');
                 last_character = From_File.find('\n');
                 payment = std::stoi(From_File.substr(space_position, last_character - space_position));
+                profit += payment;
+                if(file_name[0] == 'C')
+                    nr_of_cars--;
+                else if(file_name[0] == 'M')
+                    nr_of_motorbikes--;
+                else if(file_name[0] == 'B')
+                    nr_of_bicycles--;
             }
             else
                 Produced_Vehicles.emplace_back(From_File);
             number++;
         }
-
         Key_To_Data.close();
 
         Temp.open("Temp.txt", std::ios::out);
@@ -193,12 +267,6 @@ void Factory::sell(const std::string &file_name) {
         Temp.close();
         remove(file_name.c_str());
         rename("Temp.txt", file_name.c_str());
-
-        Key_To_Data.open("profit.txt", std::ios::in | std::ios::out);
-        Key_To_Data >> profit;
-        profit += payment;
-        Key_To_Data << profit;
-        Key_To_Data.close();
 
         std::cout << "Thanks for purchase and see you again!!!";
     }
@@ -224,14 +292,4 @@ void Factory::see_chosen_list(const std::string & file_name) {
     Key_To_Data.close();
 }
 
-void Factory::get_profit() const {
-    std::fstream file_var;
-    file_var.open("profit.txt", std::ios::in | std::ios::out | std::ios::trunc);
-    if(file_var.good()){
-        file_var << profit;
-        std::cout << profit << std::endl;
-        file_var.close();
-    }
-    else
-        std::cout << "An unexpected error occurred\n";
-}
+

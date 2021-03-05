@@ -26,6 +26,15 @@ public:
     explicit Way_Too_Long(std::string msg = "Way is too long! Too few gas in engine!\n") : message(msg) {};
 };
 
+class Bad_File : std::exception {
+    std::string message;
+public:
+    const char * what() const noexcept override {
+        return message.c_str();
+    }
+    explicit Bad_File(std::string msg = "The file is bad! An error occurred\n") : message(msg) {};
+};
+
 class Input_Output {
 public:
     static void info(int right_lim);
@@ -34,7 +43,6 @@ public:
     static double Input_Double();
     static double Input_Double_From_Range(double left_lim, double right_lim);
     static std::string Input_String();
-    static void swap_files(std::fstream Key_To_Data);
 };
 
 

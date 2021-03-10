@@ -3,9 +3,6 @@
 //
 
 #include "Vehicle.h"
-#include "Input_Output.h"
-#include <iostream>
-
 
 long double Vehicle::get_price() const {
     return price;
@@ -16,5 +13,9 @@ std::string Vehicle::get_colour() const {
 }
 
 void Vehicle::set_price(double new_price) {
-    Vehicle::price = new_price;
+    price = new_price;
+}
+
+void Vehicle::set_colour(std::string & new_color) {
+    colour = new_color;
 }

@@ -16,6 +16,7 @@ protected:
 public:
     long double get_price() const;
     std::string get_colour() const;
+    void set_colour(std::string & new_color);
     void set_price(double new_price);
     Vehicle(std::string who_owns = "Factory", std::string painted_in = "", double trunk = 0.0, long double money = 0) :
             owner(who_owns), colour(painted_in), capacity(trunk), price(money){};

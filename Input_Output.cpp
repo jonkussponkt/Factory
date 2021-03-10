@@ -5,7 +5,39 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 #include "Input_Output.h"
+
+std::vector<std::string> Input_Output::read_the_vector(const std::string &file_name) {
+    std::fstream Key_To_Data;
+    std::string From_File;
+    std::vector<std::string> data;
+
+    Key_To_Data.open(file_name.c_str(), std::ios::in);
+    std::getline(Key_To_Data, From_File);
+    if(!From_File.empty()) {
+        data.emplace_back(From_File);
+        while (std::getline(Key_To_Data, From_File))
+            data.emplace_back(From_File);
+    }
+    Key_To_Data.close();
+    return data;
+
+}
+
+void Input_Output::save_the_vector(int ID, std::vector<std::string> &vehicles, const std::string &file_name) {
+    int number = 1;
+    std::fstream Temp;
+    Temp.open("Temp.txt", std::ios::out);
+    for (auto & vehicle : vehicles) {
+        if(number != ID)
+            Temp << vehicle << '\n';
+        number++;
+    }
+    Temp.close();
+    remove(file_name.c_str());
+    rename("Temp.txt", file_name.c_str());
+}
 
 void Input_Output::info(int right_lim) {
     std::cout << "Press 1 - car\n"

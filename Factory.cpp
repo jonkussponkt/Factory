@@ -4,16 +4,14 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
 #include "Factory.h"
 #include "Input_Output.h"
-
 
 void Factory::create_a_factory() {
     int nr_of_line = 1;
     std::string From_File;
     std::fstream Key_To_Data;
-    Key_To_Data.open("Raport.txt", std::ios::in);
+    Key_To_Data.open("Report.txt", std::ios::in);
     if(Key_To_Data.good()){
         while(std::getline(Key_To_Data, From_File)){
             if(!From_File.empty()) {
@@ -38,9 +36,9 @@ void Factory::create_a_factory() {
     }
 }
 
-void Factory::close_factory(){
+void Factory::close_factory() const {
     std::fstream Key_To_Data;
-    Key_To_Data.open("Raport.txt", std::ios::out);
+    Key_To_Data.open("Report.txt", std::ios::out);
     Key_To_Data << profit << '\n';
     Key_To_Data << nr_of_cars << '\n';
     Key_To_Data << nr_of_motorbikes << '\n';
@@ -55,17 +53,23 @@ void Factory::get_info() const {
     int i = 1;
     std::string From_File;
     std::fstream Key_To_Data;
-    Key_To_Data.open("Raport.txt", std::ios::in);
+    Key_To_Data.open("Report.txt", std::ios::in);
     if(Key_To_Data.good()){
         while(std::getline(Key_To_Data, From_File)){
             if(i == 1)
-                std::cout << "Current profit: " << From_File;
+                std::cout << "Current profit: " << From_File << '\n';
             else if(i == 2)
-                std::cout << "Sold cars: " << From_File;
+                std::cout << "Cars in factory: " << From_File << '\n';
             else if(i == 3)
-                std::cout << "Sold motorbikes: " << From_File;
+                std::cout << "Motorbikes in factory: " << From_File << '\n';
             else if(i == 4)
-                std::cout << "Sold bicycles: " << From_File;
+                std::cout << "Bicycles in factory " << From_File << '\n';
+            else if(i == 5)
+                std::cout << "Sold cars: " << From_File << '\n';
+            else if(i == 6)
+                std::cout << "Sold motorbikes: " << From_File << '\n';
+            else if(i == 7)
+                std::cout << "Sold bicycles: " << From_File << '\n';
             i++;
         }
         Key_To_Data.close();
@@ -213,83 +217,67 @@ void Factory::produce(int type) {
 }
 
 void Factory::sell(const std::string &file_name) {
-    int ID;
-    int payment;
-    int number;
-    std::string decision;
-    std::string From_File;
+    int ID, payment, number;
+    std::string decision, From_File;
+    std::vector<std::string> Produced_Vehicles;
     std::fstream Key_To_Data;
     std::fstream Temp;
-    std::vector<std::string> Produced_Vehicles;
-
     Key_To_Data.open(file_name.c_str(), std::ios::in);
-    std::getline(Key_To_Data, From_File);
+    if (Key_To_Data.good()) {
+        std::getline(Key_To_Data, From_File);
 
-    Produced_Vehicles.emplace_back(From_File);
-    if (From_File.empty())
-        std::cout << "There are no such vehicles in factory\n";
-    else {
-        do {
-            std::cout << "Type ID of the vehicle you want to buy\n";
-            ID = Input_Output::Input_Number();
-            std::cout << "Press anything to confirm your choice\nIf you want to decide once more - press 1";
-            decision = Input_Output::Input_String();
-        }
-        while (decision == "1");
-
-        number = 1;
-        int space_position;
-        int last_character;
-
-        while (std::getline(Key_To_Data, From_File)) {
-            if (number == ID) {
-                space_position = From_File.find_last_of(' ');
-                last_character = From_File.find('\n');
-                payment = std::stoi(From_File.substr(space_position, last_character - space_position));
-                profit += payment;
-                if(file_name[0] == 'C')
-                    nr_of_cars--;
-                else if(file_name[0] == 'M')
-                    nr_of_motorbikes--;
-                else if(file_name[0] == 'B')
-                    nr_of_bicycles--;
+        if (From_File.empty())
+            std::cout << "There are no such vehicles in factory\n";
+        else {
+            Produced_Vehicles.emplace_back(From_File);
+            do {
+                std::cout << "Type ID of the vehicle you want to buy\n";
+                ID = Input_Output::Input_Number();
+                std::cout << "Press anything to confirm your choice\nIf you want to decide once more - press 1";
+                decision = Input_Output::Input_String();
             }
-            else
-                Produced_Vehicles.emplace_back(From_File);
-            number++;
-        }
-        Key_To_Data.close();
+            while (decision == "1");
 
-        Temp.open("Temp.txt", std::ios::out);
-        for (auto & Produced_Vehicle : Produced_Vehicles) {
-            Temp << Produced_Vehicle << '\n';
-        }
-        Temp.close();
-        remove(file_name.c_str());
-        rename("Temp.txt", file_name.c_str());
+            number = 1;
+            int space_position;
+            int last_character;
+            Key_To_Data.close();
 
-        std::cout << "Thanks for purchase and see you again!!!";
+            while (std::getline(Key_To_Data, From_File)) {
+                if (number == ID) {
+                    space_position = From_File.find_last_of(' ');
+                    last_character = From_File.find('\n');
+                    payment = std::stoi(From_File.substr(space_position, last_character - space_position));
+                    profit += payment;
+                    if (file_name[0] == 'C') {
+                        nr_of_cars--;
+                        sold_cars++;
+                    } else if (file_name[0] == 'M') {
+                        nr_of_motorbikes--;
+                        sold_motorbikes++;
+                    } else if (file_name[0] == 'B') {
+                        nr_of_bicycles--;
+                        sold_bicycles++;
+                    }
+                } else
+                    Produced_Vehicles.emplace_back(From_File);
+                number++;
+            }
+            Input_Output::save_the_vector(ID, Produced_Vehicles, file_name);
+        }
     }
 }
 
 void Factory::see_chosen_list(const std::string & file_name) {
-    std::string From_File;
-    std::fstream Key_To_Data;
+    int ID = 1;
+    std::vector<std::string> Produced_Vehicles = Input_Output::read_the_vector(file_name);
 
-    Key_To_Data.open(file_name.c_str(), std::ios::in);
-    std::getline(Key_To_Data, From_File);
-
-    if(From_File.empty())
-        std::cout << "There are no such vehicles in factory\n";
-    else {
-        int ID = 1;
-        std::cout << ID << ". " << From_File << std::endl;
-        while(std::getline(Key_To_Data, From_File)) {
+    if(Produced_Vehicles.empty())
+        std::cout << "There are no such vehicles in our factory\n";
+    else{
+        while(ID < Produced_Vehicles.size() + 1) {
+            std::cout << ID << ". " << Produced_Vehicles.at(ID - 1) << std::endl;
             ID++;
-            std::cout << ID << ". " << From_File << std::endl;
         }
     }
-    Key_To_Data.close();
 }
-
-

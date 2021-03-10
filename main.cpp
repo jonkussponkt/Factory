@@ -5,9 +5,8 @@
 
 void hello(){
     int choice = 0;
-    std::string type;
-    std::string str_vehicle;
-    std::fstream Key_To_Data;
+    std::string type, str_vehicle, file_name;
+    std::fstream Save_To_File;
     Factory Mercedes;
     Mercedes.create_a_factory();
     do {
@@ -27,7 +26,8 @@ void hello(){
         }
         while(choice < 1 || choice > 7);
 
-        int choose_type;
+        int choose_type = 0;
+        int ID = 0;
         switch(choice) {
             case 1:
                 do {
@@ -84,9 +84,7 @@ void hello(){
                 break;
             case 4:
                 Motor_Vehicle * test_drive;
-                //TODO: PRZENIEŚĆ TO W INNE MIEJSCE!!!!
-
-                int ID;
+                int i;
                 do {
                     std::cout << "Input type of vehicle you want to drive for a test\n";
                     Input_Output::info(2);
@@ -103,30 +101,34 @@ void hello(){
                     do {
                         try {
                             std::cout << "Input ID of vehicle you want to drive";
-                            ID = Input_Output::Input_Number_From_Range(1, 500);
+                            ID = Input_Output::Input_Number_From_Range(1, Mercedes.nr_of_cars);
                         }
                         catch (const Wrong_Input &wrong_input) {
                             std::cout << wrong_input.what();
                         }
                     }
-                    while (ID < 1 || ID > Mercedes.nr_of_cars);//TODO wywalić 100 i zrobić odczyt ostatniej linii
+                    while (ID < 1 || ID > Mercedes.nr_of_cars);
                     test_drive = new Car;
+                    file_name = "Car_Parking.txt";
                 }
                 else if (choose_type == 2) {
                     do {
                         try {
-                            ID = Input_Output::Input_Number_From_Range(1, 100);
                             std::cout << "Input ID of vehicle you want to drive";
+                            ID = Input_Output::Input_Number_From_Range(1, Mercedes.nr_of_motorbikes);
                         }
                         catch (const Wrong_Input &wrong_input) {
                             std::cout << wrong_input.what();
                         }
                     }
                     while(ID < 1 || ID > Mercedes.nr_of_motorbikes);
+
                     test_drive = new Motorcycle;
+                    file_name = "Motorbike_Parking.txt";
                 }
+
                 test_drive->create_motor_vehicle(ID);
-                test_drive->drive();
+                test_drive->drive(ID, file_name);
                 delete test_drive;
                 break;
             case 5:
@@ -141,6 +143,7 @@ void hello(){
         }
     }
     while(choice != 6);
+    Mercedes.close_factory();
 }
 
 int main() {

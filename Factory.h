@@ -25,7 +25,7 @@ class Factory {
     friend void hello();
 public:
     void create_a_factory();
-    void close_factory();
+    void close_factory() const;
     void get_info() const;
     void produce(int type);
     void sell(const std::string &file_name);

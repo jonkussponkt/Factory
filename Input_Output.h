@@ -37,6 +37,8 @@ public:
 
 class Input_Output {
 public:
+    static std::vector<std::string> read_the_vector(const std::string &file_name);
+    static void save_the_vector(int ID, std::vector<std::string> &vehicles, const std::string &file_name);
     static void info(int right_lim);
     static int Input_Number();
     static int Input_Number_From_Range(int left_lim, int right_lim);
@@ -44,6 +46,5 @@ public:
     static double Input_Double_From_Range(double left_lim, double right_lim);
     static std::string Input_String();
 };
-
 
 #endif //FABRYKA_INPUT_OUTPUT_H

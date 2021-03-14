@@ -84,7 +84,6 @@ void hello(){
                 break;
             case 4:
                 Motor_Vehicle * test_drive;
-                int i;
                 do {
                     std::cout << "Input type of vehicle you want to drive for a test\n";
                     Input_Output::info(2);
@@ -132,7 +131,7 @@ void hello(){
                 delete test_drive;
                 break;
             case 5:
-                Mercedes.get_info();
+                std::cout << Mercedes;
                 break;
             case 6:
                 std::cout << "Thanks and see you again!\n";

@@ -6,6 +6,6 @@
 #include "Bicycle.h"
 
 std::ostream & operator << (std::ostream & file, const Bicycle & bicycle) {
-    file << bicycle.get_colour() << " " << bicycle.capacity << " " << bicycle.get_price();
+    file << bicycle.get_colour() << " " << bicycle.get_capacity() << " " << bicycle.get_price();
     return file;
 }

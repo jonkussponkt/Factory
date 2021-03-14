@@ -16,6 +16,14 @@ void Vehicle::set_price(double new_price) {
     price = new_price;
 }
 
-void Vehicle::set_colour(std::string & new_color) {
+void Vehicle::set_colour(const std::string & new_color) {
     colour = new_color;
+}
+
+void Vehicle::set_capacity(double new_capacity) {
+    capacity = new_capacity;
+}
+
+double Vehicle::get_capacity() const {
+    return capacity;
 }

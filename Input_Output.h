@@ -38,7 +38,7 @@ public:
 class Input_Output {
 public:
     static std::vector<std::string> read_the_vector(const std::string &file_name);
-    static void save_the_vector(int ID, std::vector<std::string> &vehicles, const std::string &file_name);
+    static void save_the_vector(std::vector<std::string> &vehicles, const std::string &file_name);
     static void info(int right_lim);
     static int Input_Number();
     static int Input_Number_From_Range(int left_lim, int right_lim);

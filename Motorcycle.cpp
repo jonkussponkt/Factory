@@ -9,7 +9,7 @@
 
 void Motorcycle::create_motor_vehicle(int ID) {
     int number, spaces, first_space, second_space;
-    double money;
+    double money, new_capacity, new_gas;
     std::string str_vehicle;
     std::fstream Key_To_Data;
     number = 1;
@@ -35,14 +35,18 @@ void Motorcycle::create_motor_vehicle(int ID) {
                 if (spaces == 1) {
                     first_space = second_space;
                     second_space = i;
-                    capacity = std::stod(str_vehicle.substr(first_space, second_space));
+                    new_capacity = std::stod(str_vehicle.substr(first_space, second_space));
+                    set_capacity(new_capacity);
                     spaces++;
-                } else if (spaces == 2) {
+                }
+                else if (spaces == 2) {
                     first_space = second_space;
                     second_space = i;
-                    gas_capacity = std::stod(str_vehicle.substr(first_space, second_space));
+                    new_gas = std::stod(str_vehicle.substr(first_space, second_space));
+                    set_gas_capacity(new_gas);
                     spaces++;
-                } else if (spaces == 3) {
+                }
+                else if (spaces == 3) {
                     first_space = second_space;
                     second_space = i;
                     mileage = std::stod(str_vehicle.substr(first_space, second_space));
@@ -76,19 +80,21 @@ void Motorcycle::drive(int ID, const std::string &file_name) {
     while(driven_road < 0 || driven_road > 40);
     mileage += driven_road;
     Save_To_File.open(file_name, std::ios::out);
-    i = 0;
-    while(i < Produced_Vehicles.size()){
-        if (i == ID)
-            Save_To_File << *this << '\n';
-        else
-            Save_To_File << Produced_Vehicles.at(i) << '\n';
-        i++;
+    if(Save_To_File.good()) {
+        i = 0;
+        while (i < Produced_Vehicles.size()) {
+            if (i == ID - 1)
+                Save_To_File << *this << '\n';
+            else
+                Save_To_File << Produced_Vehicles.at(i) << '\n';
+            i++;
+        }
+        Save_To_File.close();
     }
-    Save_To_File.close();
 }
 
 std::ostream & operator<<(std::ostream & file, const Motorcycle &motorcycle) {
-    file << motorcycle.get_colour() << " " << motorcycle.capacity << " " << motorcycle.gas_capacity
+    file << motorcycle.get_colour() << " " << motorcycle.get_capacity() << " " << motorcycle.get_gas_capacity()
          << " " << motorcycle.mileage << " " << motorcycle.get_price();
     return file;
 }

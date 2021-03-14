@@ -14,23 +14,28 @@ std::vector<std::string> Input_Output::read_the_vector(const std::string &file_n
     std::vector<std::string> data;
 
     Key_To_Data.open(file_name.c_str(), std::ios::in);
-    std::getline(Key_To_Data, From_File);
-    if(!From_File.empty()) {
-        data.emplace_back(From_File);
-        while (std::getline(Key_To_Data, From_File))
+    if(Key_To_Data.good()) {
+        std::getline(Key_To_Data, From_File);
+        if (!From_File.empty()) {
             data.emplace_back(From_File);
+            while (std::getline(Key_To_Data, From_File))
+                data.emplace_back(From_File);
+        }
+        for (int i = 0; i < data.size(); i++) {
+            if (data.at(i).empty())
+                data.erase(data.begin() + i);
+        }
+        Key_To_Data.close();
     }
-    Key_To_Data.close();
     return data;
 
 }
 
-void Input_Output::save_the_vector(int ID, std::vector<std::string> &vehicles, const std::string &file_name) {
+void Input_Output::save_the_vector(std::vector<std::string> &vehicles, const std::string &file_name) {
     int number = 1;
     std::fstream Temp;
     Temp.open("Temp.txt", std::ios::out);
     for (auto & vehicle : vehicles) {
-        if(number != ID)
             Temp << vehicle << '\n';
         number++;
     }
@@ -54,11 +59,11 @@ int Input_Output::Input_Number() {
 
 int Input_Output::Input_Number_From_Range(int left_lim, int right_lim) {
     std::string get_str = Input_String();
-    int choose_type = std::stoi(get_str);
-    if(choose_type < left_lim || choose_type > right_lim)
+    int choose = std::stoi(get_str);
+    if(choose < left_lim || choose > right_lim)
         throw Wrong_Input();
     else
-        return choose_type;
+        return choose;
 }
 
 double Input_Output::Input_Double(){

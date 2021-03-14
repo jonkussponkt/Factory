@@ -8,19 +8,21 @@
 
 void Car::create_motor_vehicle(int ID) {
     int number, spaces, first_space, second_space;
-    double money;
+    double money, new_capacity, new_gas;
     std::string str_vehicle;
     std::fstream Key_To_Data;
 
     number = 1;
     Key_To_Data.open("Car_Parking.txt", std::ios::in);
-    std::getline(Key_To_Data, str_vehicle);
-    if(str_vehicle.empty())
-        std::cout << "There are no such vehicles in factory\n";
-    while(number < ID && std::getline(Key_To_Data, str_vehicle)){
-        number++;
+    if(Key_To_Data.good()) {
+        std::getline(Key_To_Data, str_vehicle);
+        if (str_vehicle.empty())
+            std::cout << "There are no such vehicles in factory\n";
+        while (number < ID && std::getline(Key_To_Data, str_vehicle)) {
+            number++;
+        }
+        Key_To_Data.close();
     }
-    Key_To_Data.close();
 
     spaces = 1;
     first_space = 0;
@@ -34,13 +36,15 @@ void Car::create_motor_vehicle(int ID) {
             if (spaces == 1) {
                 first_space = second_space;
                 second_space = i;
-                capacity = std::stod(str_vehicle.substr(first_space, second_space));
+                new_capacity = std::stod(str_vehicle.substr(first_space, second_space));
+                set_capacity(new_capacity);
                 spaces++;
             }
             else if (spaces == 2) {
                 first_space = second_space;
                 second_space = i;
-                gas_capacity = std::stod(str_vehicle.substr(first_space, second_space));
+                new_gas = std::stod(str_vehicle.substr(first_space, second_space));
+                set_gas_capacity(new_gas);
                 spaces++;
             }
             else if (spaces == 3) {
@@ -79,22 +83,25 @@ void Car::drive(int ID, const std::string & file_name) {
     }
     while(driven_road < 0 || driven_road > 40);
     mileage += driven_road;
+
     Save_To_File.open(file_name, std::ios::out);
-    i = 0;
-    while(i < Produced_Vehicles.size()){
-        if (i == ID)
-            Save_To_File << *this;
-        else
-            Save_To_File << Produced_Vehicles.at(i);
-        if(i != Produced_Vehicles.size() - 1)
-            Save_To_File << '\n';
-        i++;
+    if(Save_To_File.good()) {
+        i = 0;
+        while (i < Produced_Vehicles.size()) {
+            if (i == ID - 1)
+                Save_To_File << *this;
+            else
+                Save_To_File << Produced_Vehicles.at(i);
+            if (i != Produced_Vehicles.size() - 1)
+                Save_To_File << '\n';
+            i++;
+        }
+        Save_To_File.close();
     }
-    Save_To_File.close();
 }
 
 std::ostream & operator<<(std::ostream & file, const Car & car) {
-    file << car.get_colour() << " " << car.capacity << " "  << car.gas_capacity << " "
+    file << car.get_colour() << " " << car.get_capacity() << " "  << car.get_gas_capacity() << " "
          << car.mileage << " " << car.number_of_doors << " " << car.get_price();
     return file;
 }

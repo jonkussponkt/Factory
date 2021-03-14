@@ -10,10 +10,12 @@
 #include <vector>
 
 class Motor_Vehicle : public Vehicle {
-protected:
     double gas_capacity;
+protected:
     double mileage;
 public:
+    void set_gas_capacity(double gas);
+    double get_gas_capacity() const;
     virtual void create_motor_vehicle(int ID) = 0;
     virtual void drive(int ID, const std::string & file_name) = 0;
     Motor_Vehicle(std::string who_owns, std::string colour, double capacity, double gas = 0.0,

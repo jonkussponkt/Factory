@@ -65,7 +65,7 @@ void Motorcycle::drive(int ID, const std::string &file_name) {
     std::vector<std::string> Produced_Vehicles;
     int i;
     std::fstream Save_To_File;
-    Produced_Vehicles = Input_Output::read_the_vector(file_name);
+    Input_Output::read_the_vector(Produced_Vehicles, file_name);
 
     double driven_road = -1.0;
     do {
@@ -73,8 +73,8 @@ void Motorcycle::drive(int ID, const std::string &file_name) {
             std::cout << "Input driven road in kilometers - max 40 kms";
             driven_road = Input_Output::Input_Double_From_Range(0, 40);
         }
-        catch (const Way_Too_Long &way_too_long) {
-            std::cout << way_too_long.what() << std::endl;
+        catch (const Wrong_Input & wrong_input) {
+            std::cout << wrong_input.what() << std::endl;
         }
     }
     while(driven_road < 0 || driven_road > 40);
@@ -91,6 +91,7 @@ void Motorcycle::drive(int ID, const std::string &file_name) {
         }
         Save_To_File.close();
     }
+    std::cout << "\n\n\n";
 }
 
 std::ostream & operator<<(std::ostream & file, const Motorcycle &motorcycle) {

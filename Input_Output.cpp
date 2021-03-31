@@ -8,10 +8,9 @@
 #include <vector>
 #include "Input_Output.h"
 
-std::vector<std::string> Input_Output::read_the_vector(const std::string &file_name) {
+void Input_Output::read_the_vector(std::vector<std::string> & data, const std::string &file_name) {
     std::fstream Key_To_Data;
     std::string From_File;
-    std::vector<std::string> data;
 
     Key_To_Data.open(file_name.c_str(), std::ios::in);
     if(Key_To_Data.good()) {
@@ -27,8 +26,6 @@ std::vector<std::string> Input_Output::read_the_vector(const std::string &file_n
         }
         Key_To_Data.close();
     }
-    return data;
-
 }
 
 void Input_Output::save_the_vector(std::vector<std::string> &vehicles, const std::string &file_name) {
@@ -51,32 +48,58 @@ void Input_Output::info(int right_lim) {
         std::cout << "Press 3 - bicycle\n";
 }
 
+bool Input_Output::convertible(const std::string & to_convert) {
+    int i = 0;
+    if(to_convert.empty())
+        return false;
+    while(i < to_convert.length()){
+        if(!isdigit(to_convert[i]) && to_convert[i] != 46)
+            return false;
+        i++;
+    }
+    return true;
+}
+
 int Input_Output::Input_Number() {
     std::string get_str = Input_String();
-    int number = std::stoi(get_str);
+    int number;
+    if(!convertible(get_str))
+        throw Wrong_Input("You have to input a number!\n");
+    number = std::stoi(get_str);
     return number;
 }
 
 int Input_Output::Input_Number_From_Range(int left_lim, int right_lim) {
     std::string get_str = Input_String();
-    int choose = std::stoi(get_str);
+    int choose;
+    if(!convertible(get_str))
+        throw Wrong_Input("You have to input a number!\n");
+    choose = std::stoi(get_str);
     if(choose < left_lim || choose > right_lim)
-        throw Wrong_Input();
+        throw Wrong_Input("You have to input a number from range " + std::to_string(left_lim)
+                          + " and " + std::to_string(right_lim) + "\n");
     else
         return choose;
 }
 
 double Input_Output::Input_Double(){
-    std::string choose = Input_String();
-    double number = std::stod(choose);
+    std::string get_str = Input_String();
+    double number;
+    if(!convertible(get_str))
+        throw Wrong_Input("You have to input a number!\n");
+    number = std::stod(get_str);
     return number;
 }
 
 double Input_Output::Input_Double_From_Range(double left_lim, double right_lim) {
-    std::string choose = Input_String();
-    double number = std::stod(choose);
+    std::string get_str = Input_String();
+    double number;
+    if(!convertible(get_str))
+        throw Wrong_Input("You have to input a number!\n");
+    number = std::stod(get_str);
     if(number < left_lim || number > right_lim)
-        throw Way_Too_Long();
+        throw Wrong_Input("You have to input a number from range " + std::to_string(left_lim)
+                          + " and " + std::to_string(right_lim) + "\n");
     else
         return number;
 }

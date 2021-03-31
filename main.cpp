@@ -5,11 +5,12 @@
 
 void hello(){
     int choice = 0;
-    std::string type, str_vehicle, file_name;
+    std::string type, str_vehicle, file_name, leave;
     std::fstream Save_To_File;
     Factory Mercedes;
     Mercedes.create_a_factory();
     do {
+        choice = -1;
         do {
             try {
                 std::cout << "Welcome to our factory with long traditions of producing mechanical vehicle\n"
@@ -22,6 +23,9 @@ void hello(){
             }
             catch (const Wrong_Input &wrong_input) {
                 std::cout << wrong_input.what();
+            }
+            catch(const std::out_of_range &out){
+                std::cout << "You did input too big number!\n";
             }
         }
         while(choice < 1 || choice > 7);
@@ -39,6 +43,9 @@ void hello(){
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
                     }
+                    catch(const std::out_of_range &out){
+                        std::cout << "You did input too big number!\n";
+                    }
                     Mercedes.produce(choose_type);
                 }
                 while (choose_type < 1 || choose_type > 3);
@@ -51,7 +58,10 @@ void hello(){
                         choose_type = Input_Output::Input_Number_From_Range(1, 3);
                     }
                     catch (const Wrong_Input &wrong_input) {
-                        std::cout << wrong_input.what();
+                        std::cout << wrong_input.what() << std::endl;
+                    }
+                    catch(const std::out_of_range &out){
+                        std::cout << "You did input too big number!\n";
                     }
                 }
                 while (choose_type < 1 || choose_type > 3);
@@ -71,6 +81,9 @@ void hello(){
                     }
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
+                    }
+                    catch(const std::out_of_range &out){
+                        std::cout << "You did input too big number!\n";
                     }
                 }
                 while (choose_type < 1 || choose_type > 3);
@@ -93,8 +106,12 @@ void hello(){
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
                     }
+                    catch(const std::out_of_range &out){
+                        std::cout << "You did input too big number!\n";
+                    }
                 }
-                while (choose_type != 1 && choose_type != 2);
+                while ((choose_type != 1 && choose_type != 2) || (choose_type == 1 && Mercedes.nr_of_cars == 0)
+                      || (choose_type == 2 && Mercedes.nr_of_motorbikes == 0));
 
                 if (choose_type == 1) {
                     do {
@@ -104,6 +121,9 @@ void hello(){
                         }
                         catch (const Wrong_Input &wrong_input) {
                             std::cout << wrong_input.what();
+                        }
+                        catch(const std::out_of_range &out){
+                            std::cout << "You did input too big number!\n";
                         }
                     }
                     while (ID < 1 || ID > Mercedes.nr_of_cars);
@@ -118,6 +138,9 @@ void hello(){
                         }
                         catch (const Wrong_Input &wrong_input) {
                             std::cout << wrong_input.what();
+                        }
+                        catch(const std::out_of_range &out){
+                            std::cout << "You did input too big number!\n";
                         }
                     }
                     while(ID < 1 || ID > Mercedes.nr_of_motorbikes);
@@ -134,14 +157,17 @@ void hello(){
                 std::cout << Mercedes;
                 break;
             case 6:
-                std::cout << "Thanks and see you again!\n";
+                std::cout << "Are you sure that you want to leave?\nIf so, press 1, otherwise press anything\n";
+                leave = Input_Output::Input_String();
+                if(leave == "1")
+                    std::cout << "Thanks and see you again!\n";
                 break;
             default:
                 std::cout << "Invalid input! Choose it once more!\n";
                 break;
         }
     }
-    while(choice != 6);
+    while(leave != "1");
     Mercedes.close_factory();
 }
 

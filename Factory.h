@@ -30,7 +30,7 @@ public:
     void sell(const std::string &file_name);
     static void see_chosen_list(const std::string &file_name);
     friend std::ostream & operator << (std::ostream & str, const Factory & factory);
-    explicit Factory(std::string mark = "Mercedes") : label(mark) {
+    explicit Factory(std::string mark = "Mercedes") : label(std::move(mark)) {
         profit = 0.0;
         nr_of_cars = 0;
         nr_of_motorbikes = 0;

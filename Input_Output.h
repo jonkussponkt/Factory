@@ -14,17 +14,9 @@ public:
     const char * what() const noexcept override {
         return message.c_str();
     }
-    explicit Wrong_Input(std::string msg = "Wrong input! Type it once more!\n") : message(msg) {};
+    explicit Wrong_Input(std::string msg = "Wrong input! Type it once more!\n") : message(std::move(msg)) {};
 };
 
-class Way_Too_Long : std::exception {
-    std::string message;
-public:
-    const char * what() const noexcept override {
-        return message.c_str();
-    }
-    explicit Way_Too_Long(std::string msg = "Way is too long! Too few gas in engine!\n") : message(msg) {};
-};
 
 class Bad_File : std::exception {
     std::string message;
@@ -32,14 +24,15 @@ public:
     const char * what() const noexcept override {
         return message.c_str();
     }
-    explicit Bad_File(std::string msg = "The file is bad! An error occurred\n") : message(msg) {};
+    explicit Bad_File(std::string msg = "The file is bad! An error occurred\n") : message(std::move(msg)) {};
 };
 
 class Input_Output {
 public:
-    static std::vector<std::string> read_the_vector(const std::string &file_name);
+    static void read_the_vector(std::vector<std::string> & data, const std::string &file_name);
     static void save_the_vector(std::vector<std::string> &vehicles, const std::string &file_name);
     static void info(int right_lim);
+    static bool convertible(const std::string & to_convert);
     static int Input_Number();
     static int Input_Number_From_Range(int left_lim, int right_lim);
     static double Input_Double();

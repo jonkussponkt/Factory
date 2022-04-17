@@ -6,31 +6,18 @@
 #include "Input_Output.h"
 #include "Motorcycle.h"
 
-
-double Motorcycle::get_capacity() {
-    return capacity;
+void Motorcycle::create_vehicle() {
+    std::string basket;
+    Motor_Vehicle::create_vehicle();
+    std::cout << "Decide if vehicle has got a basket\nPress 1 - if so, otherwise press anything\n";
+    basket = Input_Output::Input_String();
+    if(basket == "1") {
+        std::cout << "Type capacity of vehicle's basket\n";
+        trunk_capacity = Input_Output::Input_Double();
+    }
 }
 
-void Motorcycle::drive() {
-    double driven_road = 0.0;
-    double maximum = gas_capacity / 0.045;
-    std::string fuel;
-
-    do {
-        try {
-            std::cout << "Input driven road in kilometers:\n";
-            driven_road = Input_Output::Input_Double_From_Range(0, maximum);
-        }
-        catch (const Way_Too_Long &way_too_long) {
-            std::cout << way_too_long.what() << std::endl;
-        }
-    }
-    while(driven_road < 0 || driven_road >= maximum);
-    gas_in_engine -= driven_road * 0.045;
-    mileage += driven_road;
-    std::cout << "Gas in engine currently: " << gas_in_engine << "\nDo you want to fuel the motorcycle up? "
-                                                                 " If so, press 1, otherwise press anything\n";
-    fuel = Input_Output::Input_String();
-    if(fuel == "1")
-        fuel_up();
+std::string Motorcycle::print_veh_data() {
+    cout.precision(2);
+    return Motor_Vehicle::print_veh_data() + " " + std::to_string(trunk_capacity);
 }

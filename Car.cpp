@@ -5,30 +5,27 @@
 #include "Car.h"
 #include "Input_Output.h"
 
-double Car::get_capacity() {
-    return capacity;
-}
-
-void Car::drive() {
-    double driven_road = -1.0;
-    std::string fuel;
-
+void Car::create_vehicle() {
+    Motor_Vehicle::create_vehicle();
     do {
         try {
-            std::cout << "Input driven road in kilometers - max 40 kms";
-            driven_road = Input_Output::Input_Double_From_Range(0, 40);
+            std::cout << "Type number of doors of vehicle\n";
+            number_of_doors = Input_Output::Input_Number();
         }
-        catch (const Way_Too_Long &way_too_long) {
-            std::cout << way_too_long.what() << std::endl;
+        catch (...) {
+            std::cout << "The value is incorrect! Type the right number - 2, 4 or 6!";
         }
+    } while(number_of_doors < 2 || number_of_doors == 3 || number_of_doors == 5 || number_of_doors > 6);
+    do {
+        std::cout << "Type capacity of vehicle's trunk\n";
+        trunk_capacity = Input_Output::Input_Double();
     }
-    while(driven_road < 0 || driven_road > 40);
-    gas_in_engine -= driven_road * 0.062;
-    mileage += driven_road;
-    std::cout << "Gas in engine currently: " << gas_in_engine << " Do you want to fuel the car up?"
-                                                                 "If so, press 1, otherwise press anything\n";
-    fuel = Input_Output::Input_String();
-    if(fuel == "1")
-        fuel_up();
+    while(trunk_capacity < 0 || trunk_capacity > 1000);
 }
+
+std::string Car::print_veh_data() {
+    cout.precision(2);
+    return Motor_Vehicle::print_veh_data() + " " + std::to_string(number_of_doors);
+}
+
 

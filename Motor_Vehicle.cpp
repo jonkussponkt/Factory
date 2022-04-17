@@ -4,13 +4,20 @@
 
 #include <iostream>
 #include "Motor_Vehicle.h"
+#include "Input_Output.h"
 
-void Motor_Vehicle::fuel_up() {
-    gas_in_engine = gas_capacity;
+void Motor_Vehicle::create_vehicle() {
+    Vehicle::create_vehicle();
+    do {
+        try {
+            std::cout << "Type capacity of vehicle's engine\n";
+            gas_capacity = Input_Output::Input_Double();
+        } catch(...) {
+            std::cout << "The value is incorrect! Type the number!\n";
+        }
+    } while(gas_capacity <= 0 && gas_capacity > 60);
 }
 
-void Motor_Vehicle::print_info() {
-    print_veh_data();
-    std::cout << "  GAS IN ENGINE: " << gas_in_engine << "  ENGINE'S CAPACITY : " << gas_capacity << "  MILEAGE: " << mileage;
+std::string Motor_Vehicle::print_veh_data() {
+    return Vehicle::print_veh_data() + " " + std::to_string(gas_capacity);
 }
-

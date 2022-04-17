@@ -9,10 +9,9 @@
 
 class Bicycle : public Vehicle {
 public:
-    double get_capacity() override;
-    Bicycle(std::string painted_in, double how_much) : Vehicle("Factory", painted_in, how_much){};
-    ~Bicycle() override {};
+    void create_vehicle() override;
+    explicit Bicycle(std::string painted_in="", double how_much=0.0) : Vehicle("Factory", std::move(painted_in), how_much){};
+    ~Bicycle() override = default;
 };
-
 
 #endif //FABRYKA_BICYCLE_H

@@ -14,7 +14,7 @@ public:
     const char * what() const noexcept override {
         return message.c_str();
     }
-    explicit Wrong_Input(std::string msg = "Wrong input! Type it once more!\n") : message(msg) {};
+    explicit Wrong_Input(std::string msg = "Wrong input! Type it once more!\n") : message(std::move(msg)) {};
 };
 
 class Way_Too_Long : std::exception {
@@ -23,7 +23,7 @@ public:
     const char * what() const noexcept override {
         return message.c_str();
     }
-    explicit Way_Too_Long(std::string msg = "Way is too long! Too few gas in engine!\n") : message(msg) {};
+    explicit Way_Too_Long(std::string msg = "Way is too long! Too few gas in engine!\n") : message(std::move(msg)) {};
 };
 
 class Input_Output {
@@ -35,6 +35,5 @@ public:
     static double Input_Double_From_Range(double left_lim, double right_lim);
     static std::string Input_String();
 };
-
 
 #endif //FABRYKA_INPUT_OUTPUT_H

@@ -24,9 +24,6 @@ void Factory::prepare_factory(std::string & file_name) {
                 Produced_Bicycles++;
         }
     }
-    else {
-        std::cout << "There are no " << file_name << " in factory\n";
-    }
 }
 
 void Factory::produce(int type) {

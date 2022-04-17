@@ -12,10 +12,14 @@ void Motor_Vehicle::create_vehicle() {
         try {
             std::cout << "Type capacity of vehicle's engine\n";
             gas_capacity = Input_Output::Input_Double();
-        } catch(...) {
+        }
+        catch(const Wrong_Input & wrong_input) {
+            std::cout << wrong_input.what();
+        }
+        catch(...) {
             std::cout << "The value is incorrect! Type the number!\n";
         }
-    } while(gas_capacity <= 0 && gas_capacity > 60);
+    } while(gas_capacity <= 0 || gas_capacity > 60);
 }
 
 std::string Motor_Vehicle::print_veh_data() {

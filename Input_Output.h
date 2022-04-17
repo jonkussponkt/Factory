@@ -28,6 +28,7 @@ public:
 
 class Input_Output {
 public:
+    static bool check_if_valid(const std::string & str);
     static void info(int right_lim);
     static int Input_Number();
     static int Input_Number_From_Range(int left_lim, int right_lim);

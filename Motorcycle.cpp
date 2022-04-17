@@ -13,7 +13,13 @@ void Motorcycle::create_vehicle() {
     basket = Input_Output::Input_String();
     if(basket == "1") {
         std::cout << "Type capacity of vehicle's basket\n";
-        trunk_capacity = Input_Output::Input_Double();
+        do {
+            try {
+                trunk_capacity = Input_Output::Input_Double();
+            } catch (...) {
+                std::cout << "The value is incorrect! Type the number!\n";
+            }
+        } while(trunk_capacity <= 0 | trunk_capacity > 1000);
     }
 }
 

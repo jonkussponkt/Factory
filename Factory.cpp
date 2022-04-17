@@ -27,7 +27,7 @@ void Factory::prepare_factory(std::string & file_name) {
 }
 
 void Factory::produce(int type) {
-    int how_many;
+    int how_many = -1;
     int ID = 1;
     std::string the_same;
     std::string file_name;
@@ -61,6 +61,7 @@ void Factory::produce(int type) {
     }
     Vehicle * vehicle_ptr;
     while (how_many > 0) {
+        std::cout << "VEHICLE NR " << ID << std::endl;
         int internal_iterator;
         if (the_same == "1")
             internal_iterator = how_many;
@@ -68,13 +69,13 @@ void Factory::produce(int type) {
             internal_iterator = 1;
         Key_To_File.open(file_name, std::ios::out | std::ios::app);
         if(Key_To_File.good()) {
-            std::cout << "VEHICLE NR " << ID << std::endl;
             if (type == 1) {
                 vehicle_ptr = new Car();
                 vehicle_ptr->create_vehicle();
                 while (internal_iterator > 0) {
                     Key_To_File << vehicle_ptr->print_veh_data() << "\n";
                     internal_iterator--;
+                    Produced_Cars++;
                 }
                 delete vehicle_ptr;
             } else if (type == 2) {
@@ -84,6 +85,7 @@ void Factory::produce(int type) {
                 while (internal_iterator > 0) {
                     Key_To_File << motor_ptr->print_veh_data() << "\n";
                     internal_iterator--;
+                    Produced_Motorbikes++;
                 }
                 delete motor_ptr;
             } else if (type == 3) {
@@ -92,19 +94,23 @@ void Factory::produce(int type) {
                 while (internal_iterator > 0) {
                     Key_To_File << vehicle_ptr->print_veh_data() << "\n";
                     internal_iterator--;
+                    Produced_Bicycles++;
                 }
                 delete vehicle_ptr;
             }
             internal_iterator--;
             ID++;
             Key_To_File.close();
-            how_many--;
+            if(the_same == "1")
+                how_many = 0;
+            else
+                how_many--;
         }
     }
 }
 
 void Factory::sell(int type) {
-    int ID = 0, comparator;
+    int ID, comparator;
     std::string From_File, File_Name;
     std::fstream Key_To_File;
     if (type == 1) {
@@ -121,7 +127,7 @@ void Factory::sell(int type) {
         std::cout << "There are no such vehicles in the factory\n"; //exception!!!
     } else {
         see_the_vehicles(File_Name);
-        std::cout << "Type the ID of the vehicle you want to buy\n";
+        std::cout << "Type the ID of the vehicle you want to buy\nTo come back to main menu press 0\n";
         do {
             try {
                 ID = Input_Output::Input_Number_From_Range(1, comparator);
@@ -132,7 +138,7 @@ void Factory::sell(int type) {
             catch (...) {
                 std::cout << "The value is incorrect! Type correct number!\n";
             }
-        } while (ID != 0 && ID < 1 || ID > comparator);
+        } while (ID < 1 || ID > comparator);
         std::cout << "Press anything to confirm your choice\nTo come back to main menu press 0\n";
         if (Input_Output::Input_String() != "0") {
             Key_To_File.open(File_Name, std::ios::in | std::ios::out);
@@ -170,7 +176,7 @@ void Factory::sell(int type) {
                     Produced_Bicycles--;
                     break;
             }
-            std::cout << "Thanks for purchase and see you again!!!";
+            std::cout << "Thanks for purchase and see you again!!!\n\n-----------\n\n";
         }
     }
 }

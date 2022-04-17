@@ -3,7 +3,7 @@
 #include "Input_Output.h"
 
 void hello() {
-    int choice = 0;
+    int choice;
     Factory Mercedes;
     std::string File_Name, str_choice;
     File_Name = "Car_Parking.txt";
@@ -32,28 +32,33 @@ void hello() {
         }
         while(choice < 1 || choice > 4);
 
-        int choose_type;
+        int choose_type = -1;
         switch(choice) {
             case 1:
                 do {
                     std::cout << "Input type of vehicle you want to produce\n";
                     Input_Output::info(3);
-                    std::cout << "To leave press 0\n";
+                    std::cout << "To come back to main menu press 0\n";
                     try {
-                        choose_type = Input_Output::Input_Number_From_Range(1, 3);
+                        choose_type = Input_Output::Input_Number_From_Range(0, 3);
                     }
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
                     }
+                    catch(...) {
+                        std::cout << "The value is incorrect! Type correct number!!\n";
+                    }
+                } while (choose_type < 0 || choose_type > 3);
+                if(choose_type > 0)
                     Mercedes.produce(choose_type);
-                } while (choose_type < 1 || choose_type > 3);
                 break;
             case 2:
                 do {
                     std::cout << "Input type of vehicle you want to see\n";
                     Input_Output::info(3);
+                    std::cout << "To come back to main menu press 0\n";
                     try {
-                        choose_type = Input_Output::Input_Number_From_Range(1, 3);
+                        choose_type = Input_Output::Input_Number_From_Range(0, 3);
                     }
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
@@ -61,21 +66,23 @@ void hello() {
                     catch(...){
                         std::cout << "The value is incorrect! Type correct number!!\n";
                     }
-                } while (choose_type < 1 || choose_type > 3);
-                if (choose_type == 1)
-                    File_Name = "Car_Parking.txt";
-                else if (choose_type == 2)
-                    File_Name = "Motorbike_Parking.txt";
-                else if (choose_type == 3)
-                    File_Name = "Bicycle_Parking.txt";
-                Mercedes.see_the_vehicles(File_Name);
+                } while (choose_type < 0 || choose_type > 3);
+                if(choose_type > 0) {
+                    if (choose_type == 1)
+                        File_Name = "Car_Parking.txt";
+                    else if (choose_type == 2)
+                        File_Name = "Motorbike_Parking.txt";
+                    else if (choose_type == 3)
+                        File_Name = "Bicycle_Parking.txt";
+                    Mercedes.see_the_vehicles(File_Name);
+                }
                 break;
             case 3:
-                std::cout << "Input type of vehicle you want to sell\n";
+                std::cout << "Input type of vehicle you want to sell\nTo come back to main menu press 0\n";
                 do {
                     Input_Output::info(3);
                     try {
-                        choose_type = Input_Output::Input_Number_From_Range(1, 3);
+                        choose_type = Input_Output::Input_Number_From_Range(0, 3);
                     }
                     catch (const Wrong_Input &wrong_input) {
                         std::cout << wrong_input.what();
@@ -83,8 +90,10 @@ void hello() {
                     catch (...) {
                         std::cout << "Invalid input! Choose it once more!\n";
                     }
-                } while (choose_type < 1 || choose_type > 3);
-                Mercedes.sell(choose_type);
+                } while (choose_type < 0 || choose_type > 3);
+                if(choose_type > 0) {
+                    Mercedes.sell(choose_type);
+                }
                 break;
             case 4:
                 std::cout << "Are you sure you want to leave? Press 1, otherwise press anything else\n";

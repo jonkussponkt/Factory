@@ -9,10 +9,10 @@
 #include <cctype>
 
 void Vehicle::create_vehicle() {
-    std::cout << "Type price of the vehicle\n";
     do {
         try {
-            price = Input_Output::Input_Number();
+            std::cout << "Type price of the vehicle\n";
+            price = Input_Output::Input_Double();
         }
         catch (...) {
             std::cout << "The value is incorrect! Type the number!\n";
@@ -27,5 +27,5 @@ void Vehicle::create_vehicle() {
 
 std::string Vehicle::print_veh_data() {
     std::cout.precision(2);
-    return owner + " " + std::to_string(price) + " " + colour + " " + std::to_string(trunk_capacity);
+    return owner + " " + colour + " " + std::to_string(price) + " "  + std::to_string(trunk_capacity);
 }

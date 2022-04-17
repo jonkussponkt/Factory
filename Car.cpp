@@ -17,10 +17,18 @@ void Car::create_vehicle() {
         }
     } while(number_of_doors < 2 || number_of_doors == 3 || number_of_doors == 5 || number_of_doors > 6);
     do {
-        std::cout << "Type capacity of vehicle's trunk\n";
-        trunk_capacity = Input_Output::Input_Double();
+        try {
+            std::cout << "Type capacity of vehicle's trunk\n";
+            trunk_capacity = Input_Output::Input_Double();
+        }
+        catch(const Wrong_Input &wrong_input){
+            std::cout << wrong_input.what();
+        }
+        catch (...) {
+            std::cout << "The value is incorrect! Type the right number - 2, 4 or 6!";
+        }
     }
-    while(trunk_capacity < 0 || trunk_capacity > 1000);
+    while(trunk_capacity <= 0 || trunk_capacity > 1000);
 }
 
 std::string Car::print_veh_data() {

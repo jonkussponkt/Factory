@@ -12,6 +12,9 @@ void Car::create_vehicle() {
             std::cout << "Type number of doors of vehicle\n";
             number_of_doors = Input_Output::Input_Number();
         }
+        catch(const Wrong_Input &wrong_input){
+            std::cout << wrong_input.what();
+        }
         catch (...) {
             std::cout << "The value is incorrect! Type the right number - 2, 4 or 6!";
         }

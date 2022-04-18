@@ -186,7 +186,6 @@ void Factory::see_the_vehicles(const std::string& File_Name) const {
     std::string vehicle;
     std::fstream file;
     file.open(File_Name);
-
     if (file) {
         while (std::getline(file, vehicle)) {
             std::cout << ID << ". " << vehicle << "\n";
